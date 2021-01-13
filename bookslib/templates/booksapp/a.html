@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn1">发送get<tton>
+    <button id='btn2'>发送post<tton>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        const instance = axios.create({
+            baseURL: 'http://192.168.2.125:8000'
+        })
+        const btn1 = document.getElementById('btn1')
+        btn1.onclick = function(){
+            console.log('我发get');
+            instance.get('/').then(res=>{
+                console.log(res);
+            }, reason=>{
+                console.log(reason);
+            })
+        }
+        const btn2 = document.getElementById('btn2')
+        btn2.onclick = function(){
+            console.log('我发post');
+            instance.post('/', 
+                {
+                    user: '123456',
+                    password: '123456'
+                }
+            ).then(res=>{
+                console.log(res);
+            }, reason=>{
+                console.log(reason);
+            })
+        }
+    </script>
+</body>
+<ml>
