@@ -151,9 +151,18 @@ def register(request):
 
     password = hash_decrypt(password)
     ver = LoginInfo.objects.add_user(user, password)
+    
     if ver:
+        user_id = LoginInfo.objects.get(user_name=user)
+        b_ver = BorrowInfo.objects.add_user_borrowinfo(user_id)
         id = LoginInfo.objects.get(user_name=user).id
-        code, msg = 201, '注册成功'
+        
+        if b_ver:
+            code, msg = 201, '用户信息、借阅信息添加成功'
+        else:
+            id = ''
+            code,msg = 302, '用户名已被占用，注册失败'
+            print('借阅信息添加失败')
     else:
         id = ''
         code,msg = 302, '用户名已被占用，注册失败'
@@ -379,7 +388,7 @@ def get_sub_books(request):
     cookies = request.COOKIES
     try:
         token = cookies['ctoken']
-        user_id = LoginInfo.objects.get(token=token)
+        user_id = LoginInfo.objects.get(token=token)  # 用户（非id）
     except:
         return HttpResponse('Not to login or Cookies over time')
 

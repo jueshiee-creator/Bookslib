@@ -251,6 +251,18 @@ class BorrowInfoManage(models.Manager):
             info = {"data":err,"meta":{"msg":"书籍获取失败","status":401}}
         return info
 
+    def add_user_borrowinfo(self, user_id): # 注册时使用
+        try:
+            a_user = BorrowInfo()
+            a_user.user = user_id
+            a_user.save()
+            info = True
+        except Exception as err:
+            print(err)
+            info = False
+        return info
+
+
 class BorrowInfo(models.Model):
     """ 借阅信息 """
     # 信誉积分
